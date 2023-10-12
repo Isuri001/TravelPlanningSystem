@@ -1,4 +1,4 @@
-package com.example.vehicle_micro_service;
+package lk.ijse.gdse63.nexttravel;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.example.vehicle_micro_service;
+package lk.ijse.gdse63.nexttravel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
