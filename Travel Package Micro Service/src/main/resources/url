@@ -1,0 +1,32 @@
+///////////////// post mapping js request //////////////////////
+
+var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+var raw = JSON.stringify({
+  "tpId": "3",
+  "catagory": "luxury",
+  "petAllow": true,
+  "vehicleId": 10,
+  "adultsAmount": 5,
+  "childrenAmount": 8,
+  "paymentStatus": "paid",
+  "discount": 20.5,
+  "price": 450000,
+  "customerId": 8
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("localhost:8085/api/v1/travel", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+
+  ////////////////////////////////////////////////////////////////
+
