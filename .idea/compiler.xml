@@ -11,10 +11,12 @@
         <module name="Guide Micro Service" />
         <module name="Vehicle Micro Service" />
         <module name="Travel Package Micro Service" />
+        <module name="Authentication Micro Service" />
         <module name="User Micro Service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Authentication Micro Service" target="17" />
       <module name="Guide Micro Service" target="17" />
       <module name="HotelMicroService" target="17" />
       <module name="Travel Package Micro Service" target="17" />
@@ -24,6 +26,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Authentication Micro Service" options="-parameters" />
       <module name="Guide Micro Service" options="-parameters" />
       <module name="HotelMicroService" options="-parameters" />
       <module name="Travel Package Micro Service" options="-parameters" />
