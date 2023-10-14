@@ -1,6 +1,8 @@
 package lk.ijse.gdse63.nexttravel.api;
 
 import lk.ijse.gdse63.nexttravel.dto.UserDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -8,9 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class UserApi {
     @GetMapping(value = "/{id:\\d+}")
-    public void search(@PathVariable String id){
-        System.out.println("Search pressed :" +id );
+
+    public ResponseEntity search(@PathVariable String id){
+        System.out.println("Search Pressed" + id);
+        return new ResponseEntity("Search Pressed" + id, HttpStatus.OK);
     }
+
     @PostMapping
     public void save(@RequestBody UserDTO userDTO){
         System.out.println("Save pressed :" + userDTO );

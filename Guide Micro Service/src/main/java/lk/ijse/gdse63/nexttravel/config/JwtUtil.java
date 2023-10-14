@@ -2,7 +2,6 @@ package lk.ijse.gdse63.nexttravel.config;
 
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
-import lk.ijse.gdse63.nexttravel.dto.AdminDTO;
 import org.springframework.stereotype.Component;
 
 import javax.naming.AuthenticationException;
@@ -26,19 +25,6 @@ public class JwtUtil {
         this.jwtParser = Jwts.parser().setSigningKey(secret_key);
     }
 
-    public String createToken(AdminDTO user){
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("userName",user.getUsername());
-        claims.put("userPassword",user.getPassword());
-        claims.put("roles",user.getType());
-        Date tokenCreateTime = new Date();
-        Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
-        return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(tokenValidity)
-                .signWith(SignatureAlgorithm.HS256,secret_key)
-                .compact();
-    }
 
     private Claims parseJwtClaims(String token){
         return jwtParser.parseClaimsJws(token).getBody();

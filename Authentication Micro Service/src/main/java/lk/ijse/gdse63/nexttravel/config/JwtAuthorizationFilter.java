@@ -29,6 +29,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     public JwtAuthorizationFilter(JwtUtil jwtUtil , ObjectMapper mapper ){
         this.jwtUtil = jwtUtil;
         this.mapper = mapper ;
+
     }
 
 

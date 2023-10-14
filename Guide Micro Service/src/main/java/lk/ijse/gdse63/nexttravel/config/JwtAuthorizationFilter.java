@@ -55,7 +55,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 String userName = (String) claims.get("userName");
                 String password = (String) claims.get("UserPassword");
                 ArrayList<String> o = (ArrayList<String>) claims.get("roles");
-                boolean admin = o.contains("User_Admin");
+                boolean admin = o.contains("Guide_Admin");
                 if (admin) {
                     System.out.println(admin);
                 }
