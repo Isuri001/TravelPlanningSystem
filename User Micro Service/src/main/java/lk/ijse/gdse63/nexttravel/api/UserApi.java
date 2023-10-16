@@ -5,6 +5,9 @@ import lk.ijse.gdse63.nexttravel.dto.UserDTO;
 import lk.ijse.gdse63.nexttravel.dto.security.ErrorResponse;
 import lk.ijse.gdse63.nexttravel.dto.security.LoginRequest;
 import lk.ijse.gdse63.nexttravel.dto.security.LoginResponse;
+import lk.ijse.gdse63.nexttravel.exception.CreateFailException;
+import lk.ijse.gdse63.nexttravel.exception.DeleteFailException;
+import lk.ijse.gdse63.nexttravel.exception.UpdateFailException;
 import lk.ijse.gdse63.nexttravel.exception.UserNotFoundException;
 import lk.ijse.gdse63.nexttravel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +104,7 @@ public class UserApi {
        try {
            userService.updateUser(userDTO);
            return new ResponseEntity<>(userDTO,HttpStatus.OK);
-       }catch (UpdateException e){
+       }catch (UpdateFailException e){
            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
        }
     }

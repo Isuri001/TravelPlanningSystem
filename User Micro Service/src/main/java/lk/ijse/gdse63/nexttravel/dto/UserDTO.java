@@ -27,7 +27,7 @@ public class UserDTO {
 
     private byte[] profilePicByte;
     private byte[] nicFrontByte;
-    private byte[] nicRearFront;
+    private byte[] nicRearByte;
 
 
     public UserDTO(){
