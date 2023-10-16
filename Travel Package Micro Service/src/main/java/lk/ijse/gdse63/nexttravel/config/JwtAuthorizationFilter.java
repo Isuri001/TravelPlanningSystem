@@ -55,17 +55,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 String userName = (String) claims.get("userName");
                 String password = (String) claims.get("UserPassword");
                 ArrayList<String> o = (ArrayList<String>) claims.get("roles");
-                boolean admin = o.contains("User_Admin");
-                boolean u = o.contains("user");
-                if (admin || u ) {
+                boolean admin = o.contains("Travel_Package_Admin");
+                if (admin) {
                     System.out.println(admin);
                 }
                 System.out.println("email : "+email);
                 System.out.println("User Name : "+userName);
                 System.out.println("Password : "+password);
-
-                //AdminDTO user = WebClient.create(adminDataEndPoint + "/" + email).get().retrieve().bodyToMono(AdminDTO.class).block();
-                //System.out.println(user);
+                AdminDTO user = WebClient.create(adminDataEndPoint + "/" + email).get().retrieve().bodyToMono(AdminDTO.class).block();
+                System.out.println(user);
                 Authentication authentication =
                         new UsernamePasswordAuthenticationToken(email,"", new ArrayList<>());
                 SecurityContextHolder.getContext().setAuthentication(authentication);

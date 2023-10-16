@@ -1,15 +1,15 @@
 package lk.ijse.gdse63.nexttravel.config;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
-import lk.ijse.gdse63.nexttravel.dto.UserDTO;
 import org.springframework.stereotype.Component;
 
 import javax.naming.AuthenticationException;
-
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class JwtUtil {
@@ -70,19 +70,5 @@ public class JwtUtil {
 
     private List<String> getRoles(Claims claims){
         return (List<String>) claims.get("roles");
-    }
-
-    public String createToken(UserDTO user){
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("UserName", user.getUsername());
-        claims.put("UserPassword", user.getPassword());
-        claims.put("roles", user.getRoles());
-        Date tokenCreateTime = new Date();
-        Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
-        return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(tokenValidity)
-                .signWith(SignatureAlgorithm.HS256,secret_key)
-                .compact();
     }
 }
