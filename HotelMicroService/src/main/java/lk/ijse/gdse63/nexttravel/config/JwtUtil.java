@@ -15,8 +15,6 @@ import java.util.List;
 public class JwtUtil {
     private final String secret_key = "mesecretkey";
 
-    private long accessTokenValidity = 60*60*1000;
-
     private final JwtParser jwtParser;
 
     private final String TOKEN_HEADER = "Authorization";
