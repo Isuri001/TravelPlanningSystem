@@ -31,7 +31,7 @@ public class UserDTO {
 
 
     public UserDTO(){
-        this.roles = new ArrayList<>();
+        roles = new ArrayList<>();
         roles.add("user");
     }
 }
