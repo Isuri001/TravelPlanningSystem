@@ -17,7 +17,8 @@ public interface UserRepo extends CrudRepository<User, Integer> {
     @Modifying
     @Transactional
     @Query(value = "update user u set u.profile_pic = ? , u.nic_front_img = ? ," +
-    "u.nic_rear_img = ? where u.email = ?" , nativeQuery = true)
+    "u.nic_rear_img = ? where u.email = ?" ,
+            nativeQuery = true)
 
     void updateImages(String profilePic, String nicFrontImg , String nicRearImg , String email);
 
