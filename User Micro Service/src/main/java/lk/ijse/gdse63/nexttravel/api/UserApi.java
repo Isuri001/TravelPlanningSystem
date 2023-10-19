@@ -54,7 +54,6 @@ public class UserApi {
 
 
     @GetMapping(value = "/{id:\\d+}/{email}")
-
     public ResponseEntity search(@PathVariable String email){
         try {
             UserDTO userDTO = userService.searchUserByEmail(email);
@@ -72,8 +71,8 @@ public class UserApi {
                                        @RequestPart(value = "contact")String contact,
                                        @RequestPart(value = "email")String email,
                                        @RequestPart(value = "birthday")String birthday,
-                                       @RequestPart(value = "nicFront")byte[] nicFront,
-                                       @RequestPart(value = "nicRear")byte[]  nicRear,
+                                       @RequestPart(value = "nicFront") byte[] nicFront,
+                                       @RequestPart(value = "nicRear") byte[]  nicRear,
                                        @RequestPart(value = "gender") String gender,
                                        @RequestPart(value = "nicNo") String nicNo
     ){
