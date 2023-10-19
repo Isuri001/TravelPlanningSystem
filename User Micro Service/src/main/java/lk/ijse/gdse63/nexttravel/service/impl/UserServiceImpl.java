@@ -32,7 +32,7 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Value("http://localhost:8080/api/v1/login")
+    @Value("${admin.data}")
 
     private String adminDataEndPoint;
 
@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
+        System.out.println(user);
         List<String> roles = new ArrayList<>();
         roles.add("user");
         UserDetails userDetails =
