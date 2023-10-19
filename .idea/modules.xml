@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/Guide Micro Service/Guide Micro Service.iml" filepath="$PROJECT_DIR$/Guide Micro Service/Guide Micro Service.iml" />
       <module fileurl="file://$PROJECT_DIR$/HotelMicroService/HotelMicroService.iml" filepath="$PROJECT_DIR$/HotelMicroService/HotelMicroService.iml" />
       <module fileurl="file://$PROJECT_DIR$/Travel Package Micro Service/Travel Package Micro Service.iml" filepath="$PROJECT_DIR$/Travel Package Micro Service/Travel Package Micro Service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UI/UI.iml" filepath="$PROJECT_DIR$/UI/UI.iml" />
       <module fileurl="file://$PROJECT_DIR$/User Micro Service/User Micro Service.iml" filepath="$PROJECT_DIR$/User Micro Service/User Micro Service.iml" />
       <module fileurl="file://$PROJECT_DIR$/Vehicle Micro Service/Vehicle Micro Service.iml" filepath="$PROJECT_DIR$/Vehicle Micro Service/Vehicle Micro Service.iml" />
     </modules>
