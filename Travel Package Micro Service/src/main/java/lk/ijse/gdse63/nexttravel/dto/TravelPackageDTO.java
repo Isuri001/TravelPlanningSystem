@@ -7,15 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TravelPackageDTO {
-    private String tpId;
+public class TravelPackageDTO{
+    private String id;
+    private int hotelCount;
+    private int areaCount;
+    private double estimatedPrice;
     private String category;
-    private Boolean petAllow;
-    private int vehicleId;
-    private int adultsAmount;
-    private int childrenAmount;
-    private String paymentStatus;
-    private Double discount;
-    private Double price;
-    private int customerId;
+    private int dayCount;
 }
