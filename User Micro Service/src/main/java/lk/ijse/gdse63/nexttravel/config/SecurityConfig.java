@@ -54,7 +54,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    
+
     @SuppressWarnings("deprecation")
     @Bean
     public NoOpPasswordEncoder passwordEncoder() {

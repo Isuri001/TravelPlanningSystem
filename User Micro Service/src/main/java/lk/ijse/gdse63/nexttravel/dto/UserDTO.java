@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-@Data
 @AllArgsConstructor
-
+@Data
 public class UserDTO {
     private int id;
     private String username;
@@ -25,14 +24,13 @@ public class UserDTO {
     private String remarks;
     private String profilePic;
 
-    private byte[] profilePicByte;
+    private byte []profilePicByte;
     private byte[] nicFrontByte;
     private byte[] nicRearByte;
-
 
     public UserDTO(){
         roles = new ArrayList<>();
         roles.add("user");
     }
-}
 
+}
