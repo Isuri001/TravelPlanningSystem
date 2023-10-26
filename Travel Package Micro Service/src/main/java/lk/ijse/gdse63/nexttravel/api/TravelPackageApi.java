@@ -35,7 +35,17 @@ public class TravelPackageApi {
         }
     }
 
+    @GetMapping("/{category:^REGULAR|MID-LEVEL|LUXURY|SUPER LUXURY$}")
+    public ResponseEntity getByCategory(@PathVariable String category){
+        try {
+            List<TravelPackageDTO> list  = service.findByCategory(category);
+            return ResponseEntity.ok(list);
+        } catch (NotFoundException e) {
+            return new ResponseEntity(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
 
+    }
+    
     @PostMapping
     public void save(@RequestBody TravelPackageDTO travelPackageDTO){
         System.out.println("Save pressed :" + travelPackageDTO );
