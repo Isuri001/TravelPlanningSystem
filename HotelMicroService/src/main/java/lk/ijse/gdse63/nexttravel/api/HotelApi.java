@@ -2,13 +2,20 @@ package lk.ijse.gdse63.nexttravel.api;
 
 import lk.ijse.gdse63.nexttravel.dto.HotelDTO;
 import lk.ijse.gdse63.nexttravel.dto.PricesDTO;
+import lk.ijse.gdse63.nexttravel.exception.DeleteFailException;
+import lk.ijse.gdse63.nexttravel.exception.NotFoundException;
+import lk.ijse.gdse63.nexttravel.exception.SaveFailException;
+import lk.ijse.gdse63.nexttravel.exception.UpdateFailException;
+import lk.ijse.gdse63.nexttravel.service.HotelService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
@@ -135,7 +142,7 @@ public class HotelApi {
         try {
             List<HotelDTO> byStarRate = hotelService.findByStarRate(star);
             return new ResponseEntity<>(byStarRate, HttpStatus.OK);
-        } catch (ChangeSetPersister.NotFoundException e) {
+        } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
