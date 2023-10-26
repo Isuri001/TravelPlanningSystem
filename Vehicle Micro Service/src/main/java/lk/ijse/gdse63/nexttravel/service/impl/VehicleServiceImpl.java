@@ -3,6 +3,7 @@ package lk.ijse.gdse63.nexttravel.service.impl;
 
 import lk.ijse.gdse63.nexttravel.Exception.NotFoundException;
 import lk.ijse.gdse63.nexttravel.Exception.SaveFailException;
+import lk.ijse.gdse63.nexttravel.Exception.UpdatefailException;
 import lk.ijse.gdse63.nexttravel.dto.DriverDTO;
 import lk.ijse.gdse63.nexttravel.dto.VehicleDTO;
 import lk.ijse.gdse63.nexttravel.entity.Driver;
@@ -83,5 +84,25 @@ public class VehicleServiceIMPL implements VehicleService {
             return objects;
         }catch (Exception e){
             throw new NotFoundException("Vehicles Not Found",e);
+        }
+    }
+
+    @Override
+    public void updateVehicle(VehicleDTO dto) throws UpdatefailException {
+        try {
+            Vehicle vehicle = modelMapper.map(dto, Vehicle.class);
+            Driver driver = modelMapper.map(dto.getDriverDTO(), Driver.class);
+            Optional<Driver> byId = driverRepo.findById(driver.getId());
+            if (byId.isPresent()){
+                deleteImages(byId);
+                exportImages(dto,driver,vehicle);
+                Driver save = driverRepo.save(driver);
+                vehicle.setDriver(save);
+                vehicleRepo.save(vehicle);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new UpdatefailException("Update Fail",e);
         }
     }
