@@ -7,6 +7,7 @@ import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
 
+
 public class StringToPricesListConverter implements Converter<String, ArrayList<PricesDTO>> {
 
     @Override
