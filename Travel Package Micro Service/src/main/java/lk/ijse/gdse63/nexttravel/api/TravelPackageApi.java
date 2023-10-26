@@ -25,7 +25,17 @@ public class TravelPackageApi {
 
     }
 
-    
+    @GetMapping("/{id:^NEXT-\\d{4}$}")
+    public ResponseEntity get(@PathVariable String id){
+        try {
+            TravelPackageDTO travelPackageDTO = service.fidById(id);
+            return ResponseEntity.ok(travelPackageDTO);
+        }catch (NotFoundException e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @PostMapping
     public void save(@RequestBody TravelPackageDTO travelPackageDTO){
         System.out.println("Save pressed :" + travelPackageDTO );
