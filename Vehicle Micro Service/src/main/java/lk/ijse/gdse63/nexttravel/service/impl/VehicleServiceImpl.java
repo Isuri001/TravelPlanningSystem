@@ -1,6 +1,7 @@
 package lk.ijse.gdse63.nexttravel.service.impl;
 
 
+import lk.ijse.gdse63.nexttravel.Exception.DeleteFailException;
 import lk.ijse.gdse63.nexttravel.Exception.NotFoundException;
 import lk.ijse.gdse63.nexttravel.Exception.SaveFailException;
 import lk.ijse.gdse63.nexttravel.Exception.UpdatefailException;
@@ -104,5 +105,20 @@ public class VehicleServiceIMPL implements VehicleService {
         }catch (Exception e){
             e.printStackTrace();
             throw new UpdatefailException("Update Fail",e);
+        }
+    }
+
+    @Override
+    public void deleteVehicle(int id) throws NotFoundException, DeleteFailException {
+        try {
+            Optional<Driver> byId = driverRepo.findById(id);
+            if (byId.isPresent()){
+                deleteImages(byId);
+                vehicleRepo.deleteById(id);
+            }else {
+                throw new NotFoundException("Vehicle Not Found");
+            }
+        }catch (Exception e){
+            throw new DeleteFailException("Delete Fail",e);
         }
     }
