@@ -17,7 +17,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -149,4 +156,54 @@ public class VehicleServiceIMPL implements VehicleService {
                 }
             }
         }
+    }
+
+
+    public void exportImages(VehicleDTO vehicleDTO, Driver driver, Vehicle vehicle) {
+        ArrayList<byte[]> images = vehicleDTO.getImages();
+        String dt = LocalDate.now().toString().replace("-", "_") + "__"
+                + LocalTime.now().toString().replace(":", "_");
+
+        ArrayList<String> pathList = new ArrayList<>();
+
+        for (int i = 0; i < images.size(); i++) {
+            {
+                try {
+                    InputStream is = new ByteArrayInputStream(images.get(i));
+                    BufferedImage bi = ImageIO.read(is);
+                    File outputfile = new File("images/vehicle/" + dt + "_" + i + ".jpg");
+                    ImageIO.write(bi, "jpg", outputfile);
+                    pathList.add(outputfile.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        vehicle.setImages(gson.toJson(pathList));
+
+        System.out.println(pathList);
+        byte[] licenseImageFront = vehicleDTO.getDriverDTO().getLicenseImageFront();
+        byte[] licenseImageRear = vehicleDTO.getDriverDTO().getLicenseImageRear();
+
+
+        try {
+            InputStream is = new ByteArrayInputStream(licenseImageFront);
+            BufferedImage bi = ImageIO.read(is);
+            File outputfile = new File("images/driver/" + dt + "_front"+ ".jpg");
+            ImageIO.write(bi, "jpg", outputfile);
+            String absolutePath = outputfile.getAbsolutePath();
+            driver.setLicenseImageFront(absolutePath);
+
+            InputStream is1 = new ByteArrayInputStream(licenseImageRear);
+            BufferedImage bi1 = ImageIO.read(is1);
+            File outputfile1 = new File("images/driver/" + dt + "_rear"+ ".jpg");
+            ImageIO.write(bi1, "jpg", outputfile1);
+            String absolutePath1 = outputfile1.getAbsolutePath();
+            driver.setLicenseImageRear(absolutePath1);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
