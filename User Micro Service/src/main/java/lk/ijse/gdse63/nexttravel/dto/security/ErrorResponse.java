@@ -1,19 +1,16 @@
 package lk.ijse.gdse63.nexttravel.dto.security;
 
 import org.springframework.http.HttpStatus;
-
 public class ErrorResponse {
-
     HttpStatus httpStatus;
-
     String message;
 
-    public ErrorResponse(HttpStatus httpStatus, String message){
+    public ErrorResponse(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }
 
-    public HttpStatus getHttpStatus(){
+    public HttpStatus getHttpStatus() {
         return httpStatus;
     }
 
