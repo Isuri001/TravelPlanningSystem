@@ -9,18 +9,16 @@ import jakarta.persistence.Id;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private int id;
-
     private String username;
-
     private String password;
-
     private String usernic;
-
     private String email;
-
     private String type;
+
+    public Admin() {
+
+    }
 
     public Admin(int id, String username, String password, String usernic, String email, String type) {
         this.id = id;
@@ -29,9 +27,6 @@ public class Admin {
         this.usernic = usernic;
         this.email = email;
         this.type = type;
-    }
-
-    public Admin() {
     }
 
     public int getId() {
