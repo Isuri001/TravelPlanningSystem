@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -120,5 +121,32 @@ public class VehicleServiceIMPL implements VehicleService {
             }
         }catch (Exception e){
             throw new DeleteFailException("Delete Fail",e);
+        }
+    }
+
+    private void deleteImages(Optional<Driver> byId) {
+        if (byId.isPresent()){
+            if (byId.get().getLicenseImageFront() != null) {
+                File file = new File(byId.get().getLicenseImageFront());
+                boolean delete = file.delete();
+                System.out.println("Front " + delete);
+            }
+            if (byId.get().getLicenseImageRear() != null) {
+                File file = new File(byId.get().getLicenseImageRear());
+                boolean delete = file.delete();
+                System.out.println("Rear " + delete);
+            }
+            if (byId.isPresent()){
+                Driver driver = byId.get();
+                String images = driver.getVehicle().getImages();
+                if (images != null){
+                    ArrayList<String> pathList = gson.fromJson(images, new TypeToken<ArrayList<String>>(){}.getType());
+                    for (String path : pathList) {
+                        File file = new File(path);
+                        boolean delete = file.delete();
+                        System.out.println("Images " + delete);
+                    }
+                }
+            }
         }
     }
