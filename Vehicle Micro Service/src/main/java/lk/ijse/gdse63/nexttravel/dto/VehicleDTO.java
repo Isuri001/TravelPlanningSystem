@@ -4,23 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class VehicleDTO {
     private int id;
     private String name;
-    private String transmission;
-    private String category;
-    private String vehicleType;
-    private String seatCapacity;
     private String fuelType;
-    private Double dayFee;
-    private Double fuelUsage;
-    private Double kmFee;
-    private Boolean hybrid;
-    private int driverId;
-    private String driverName;
-    private String contactNo;
+    private boolean isHybrid;
+    private ArrayList<byte[]> images;
+    private double priceFor1Km;
+    private double fuelUsage;
+    private double priceFor100Km;
+    private int seatCapacity;
+    private String vehicleType;
+    private String category;
+    private String transmission;
 
+    private DriverDTO driverDTO;
 }
