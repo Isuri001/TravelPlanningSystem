@@ -20,23 +20,22 @@ public class SecurityConfig {
     private JwtAuthorizationFilter jwtAuthorizationFilter;
 
 
+    public SecurityConfig() {
 
-    public SecurityConfig(){
 
     }
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http , NoOpPasswordEncoder noOpPasswordEncoder)throws Exception{
+    public AuthenticationManager authenticationManager(HttpSecurity http, NoOpPasswordEncoder noOpPasswordEncoder)
+            throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        //authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(noOpPasswordEncoder);
         return authenticationManagerBuilder.build();
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
 
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                //.requestMatchers("/api/v1/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -44,8 +43,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+
+    @SuppressWarnings("deprecation")
     @Bean
-    public NoOpPasswordEncoder passwordEncoder(){
+    public NoOpPasswordEncoder passwordEncoder() {
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
+
 }
