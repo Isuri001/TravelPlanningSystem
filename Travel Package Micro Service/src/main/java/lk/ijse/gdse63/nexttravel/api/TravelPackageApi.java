@@ -5,15 +5,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
-@RequestMapping("/api/v1/travel")
-@CrossOrigin
+@RequestMapping("api/v1/travel-package")
 public class TravelPackageApi {
-    @GetMapping(value = "/{id:\\d+}")
-    public ResponseEntity search(@PathVariable String id){
-        System.out.println("Search pressed :" +id );
-        return new ResponseEntity("Search Pressed"+ id , HttpStatus.OK);
+    TravelPackageService service;
+    public TravelPackageApi(TravelPackageService service){
+        this.service = service;
     }
+    @PostMapping
+    public ResponseEntity save(@RequestBody TravelPackageDTO obj){
+        String save = null;
+        try {
+            save = service.save(obj);
+            return ResponseEntity.ok(save);
+        } catch (SaveFailException e) {
+            return new ResponseEntity("Operation Fail", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    
     @PostMapping
     public void save(@RequestBody TravelPackageDTO travelPackageDTO){
         System.out.println("Save pressed :" + travelPackageDTO );
