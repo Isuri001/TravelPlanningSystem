@@ -207,3 +207,32 @@ public class VehicleServiceIMPL implements VehicleService {
 
 
     }
+
+    public void importImages(VehicleDTO vehicleDTO, Driver driver, Vehicle vehicle) throws IOException {
+        BufferedImage read = ImageIO.read(new File(driver.getLicenseImageFront()));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(read, "jpg", baos);
+        byte[] bytes = baos.toByteArray();
+        vehicleDTO.getDriverDTO().setLicenseImageFront(bytes);
+
+        BufferedImage read1 = ImageIO.read(new File(driver.getLicenseImageRear()));
+        ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+        ImageIO.write(read1, "jpg", baos1);
+        byte[] bytes1 = baos1.toByteArray();
+        vehicleDTO.getDriverDTO().setLicenseImageRear(bytes1);
+
+
+        String images = vehicle.getImages();
+        vehicleDTO.setImages(new ArrayList<>());
+        ArrayList<String> imageList = gson.fromJson(images, new TypeToken<ArrayList<String>>() {});
+        for (int i = 0; i < imageList.size(); i++) {
+            BufferedImage r = ImageIO.read(new File(driver.getLicenseImageRear()));
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            ImageIO.write(r, "jpg", b);
+            byte[] imgData= b.toByteArray();
+            vehicleDTO.getImages().add(imgData);
+        }
+
+    }
+}
+
