@@ -1,7 +1,9 @@
 package lk.ijse.gdse63.nexttravel.service.impl;
 
 
+import lk.ijse.gdse63.nexttravel.Exception.NotFoundException;
 import lk.ijse.gdse63.nexttravel.Exception.SaveFailException;
+import lk.ijse.gdse63.nexttravel.dto.DriverDTO;
 import lk.ijse.gdse63.nexttravel.dto.VehicleDTO;
 import lk.ijse.gdse63.nexttravel.entity.Driver;
 import lk.ijse.gdse63.nexttravel.entity.Vehicle;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -45,4 +48,22 @@ public class VehicleServiceIMPL implements VehicleService {
             throw new SaveFailException("Save Fail ",e);
         }
 
+    }
+
+    @Override
+    public VehicleDTO searchVehicle(int id) throws NotFoundException {
+        try {
+            Optional<Vehicle> byId = vehicleRepo.findById(id);
+            if (byId.isPresent()){
+                VehicleDTO vehicle = modelMapper.map(byId.get(), VehicleDTO.class);
+                DriverDTO driver = modelMapper.map(byId.get().getDriver(), DriverDTO.class);
+                vehicle.setDriverDTO(driver);
+                importImages(vehicle,byId.get().getDriver(),byId.get());
+                return vehicle;
+            }else {
+                throw new NotFoundException("Vehicle Not Found");
+            }
+        } catch ( Exception e ) {
+            throw new NotFoundException("Vehicle Not Found",e);
+        }
     }
