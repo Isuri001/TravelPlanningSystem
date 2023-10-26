@@ -23,68 +23,66 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
-    @Value("${admin.data}")
-    private String adminDataEndPoint;
-
     private final JwtUtil jwtUtil;
-
     private final ObjectMapper mapper;
     private UserService service;
 
-    public JwtAuthorizationFilter(JwtUtil jwtUtil , ObjectMapper mapper , UserService service){
+    public JwtAuthorizationFilter(JwtUtil jwtUtil, ObjectMapper mapper, UserService service) {
         this.jwtUtil = jwtUtil;
-        this.mapper = mapper ;
+        this.mapper = mapper;
         this.service = service;
     }
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Map<String , Object> errorDetails = new HashMap<>();
-        System.out.println("Filtering internal Start");
+        Map<String, Object> errorDetails = new HashMap<>();
+        System.out.println("Filtering internal start");
         try {
             String accessToken = jwtUtil.resolveToken(request);
-            if (accessToken == null){
+            System.out.println("token : "+accessToken);
+            if (accessToken == null ) {
                 filterChain.doFilter(request, response);
                 return;
             }
-            System.out.println("token :"+accessToken);
+            System.out.println("token : "+accessToken);
             Claims claims = jwtUtil.resolveClaims(request);
 
-            if (claims != null & jwtUtil.validateClaims(claims)){
+            if(claims != null & jwtUtil.validateClaims(claims)){
                 Integer userId = (Integer) claims.get("userId");
                 String email = claims.getSubject();
                 ArrayList<String> o = (ArrayList<String>) claims.get("roles");
                 boolean admin = o.contains("User_Admin");
                 boolean u = o.contains("user");
 
-                if (u) {
+                if (u){
                     String[] split = request.getServletPath().split("/");
                     String id = split[4];
                     System.out.println(split.length-1);
                     System.out.println(id);
-                    if (userId!=Integer.parseInt(id)){
+                    if (userId!= Integer.parseInt(id)){
                         throw new AccessDeniedException("Access Denied");
                     }
                 }
-                if (admin || u ) {
+
+                if (admin || u) {
                     Authentication authentication =
-                            new UsernamePasswordAuthenticationToken(email,"", new ArrayList<>());
+                            new UsernamePasswordAuthenticationToken(email,"",new ArrayList<>());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
+
         }catch (Exception e){
             e.printStackTrace();
-            errorDetails.put("message","Authentication Error");
+            errorDetails.put("message", "Authentication Error");
             errorDetails.put("details",e.getMessage());
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-            mapper.writeValue(response.getWriter(),errorDetails);
-        }
+            mapper.writeValue(response.getWriter(), errorDetails);
 
-        filterChain.doFilter(request,response);
+        }
+        filterChain.doFilter(request, response);
     }
 }
