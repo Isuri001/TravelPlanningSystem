@@ -45,7 +45,20 @@ public class TravelPackageApi {
         }
 
     }
+
+    @PutMapping
+    public ResponseEntity update(@RequestBody TravelPackageDTO obj){
+        try {
+            service.update(obj);
+            return ResponseEntity.ok().build();
+        } catch (UpdateFailException e) {
+            return new ResponseEntity(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
     
+
     @PostMapping
     public void save(@RequestBody TravelPackageDTO travelPackageDTO){
         System.out.println("Save pressed :" + travelPackageDTO );
