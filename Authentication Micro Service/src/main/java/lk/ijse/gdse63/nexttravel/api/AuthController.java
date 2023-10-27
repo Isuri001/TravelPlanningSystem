@@ -16,36 +16,36 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+
 @Controller
-@RequestMapping("api/v1/login")
+@RequestMapping("/api/v1/login")
+@CrossOrigin
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    @Autowired // aluthen object hada hada inn oni ne . spring laga thyn ewa aran dagannawa
+    @Autowired
     private AdminService adminServiceImpl;
-
     private JwtUtil jwtUtil;
-    public AuthController(AuthenticationManager authenticationManager , JwtUtil jwtUtil ) {
-        this.authenticationManager =authenticationManager;
+    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+
     }
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody LoginRequest loginRequest){
-
-        try{
+    public ResponseEntity login(@RequestBody LoginRequest loginRequest)  {
+        try {
             Authentication authentication =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             String email = authentication.getName();
-            AdminDTO user = new AdminDTO();
-            user.setEmail(loginRequest.getEmail());
-            user.setPassword(loginRequest.getPassword());
+            AdminDTO user = adminServiceImpl.searchUser(email);
             String token = jwtUtil.createToken(user);
-            LoginResponse loginResponse = new LoginResponse(email , token);
+            LoginResponse loginResponse = new LoginResponse(email,token);
             return ResponseEntity.ok(loginResponse);
-        }catch (BadCredentialsException e ){
-            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, "Invalid username or password");
+
+        }catch (BadCredentialsException e){
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST,"Invalid username or password");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }catch (Exception e){
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -57,5 +57,4 @@ public class AuthController {
     public ResponseEntity getUser(@PathVariable String email){
         return ResponseEntity.ok(adminServiceImpl.searchUser(email));
     }
-
 }
