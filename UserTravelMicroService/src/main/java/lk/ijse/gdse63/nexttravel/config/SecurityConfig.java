@@ -29,6 +29,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(HttpSecurity http, NoOpPasswordEncoder noOpPasswordEncoder)
             throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        //authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(noOpPasswordEncoder);
         return authenticationManagerBuilder.build();
     }
 
