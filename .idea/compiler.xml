@@ -11,8 +11,9 @@
         <module name="Guide Micro Service" />
         <module name="Vehicle Micro Service" />
         <module name="Travel Package Micro Service" />
-        <module name="Authentication Micro Service" />
+        <module name="UserTravelMicroService" />
         <module name="User Micro Service" />
+        <module name="Authentication Micro Service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,6 +22,7 @@
       <module name="HotelMicroService" target="17" />
       <module name="Travel Package Micro Service" target="17" />
       <module name="User Micro Service" target="17" />
+      <module name="UserTravelMicroService" target="17" />
       <module name="Vehicle Micro Service" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -31,6 +33,7 @@
       <module name="HotelMicroService" options="-parameters" />
       <module name="Travel Package Micro Service" options="-parameters" />
       <module name="User Micro Service" options="-parameters" />
+      <module name="UserTravelMicroService" options="-parameters" />
       <module name="Vehicle Micro Service" options="-parameters" />
     </option>
   </component>
