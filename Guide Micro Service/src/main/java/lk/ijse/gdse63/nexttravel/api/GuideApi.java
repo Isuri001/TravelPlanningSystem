@@ -1,6 +1,10 @@
 package lk.ijse.gdse63.nexttravel.api;
 
 import lk.ijse.gdse63.nexttravel.dto.GuideDTO;
+import lk.ijse.gdse63.nexttravel.exception.SaveFailException;
+import lk.ijse.gdse63.nexttravel.exception.SearchFailException;
+import lk.ijse.gdse63.nexttravel.exception.UpdateFailException;
+import lk.ijse.gdse63.nexttravel.service.GuidService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +16,17 @@ import java.time.LocalDate;
 @CrossOrigin
 public class GuideApi {
 
+    GuidService service;
+
+    public GuideApi(GuidService service) {
+        this.service = service;
+    }
+
     @PostMapping
-    public ResponseEntity saveGuide(@RequestParam("name") String name,
-                                    @RequestParam("address") String address,
+    public ResponseEntity saveGuide(@RequestParam("name")String name,
+                                    @RequestParam("address")String address,
                                     @RequestParam("contact") String contact,
-                                    @RequestParam("birthdate")LocalDate birthDate,
+                                    @RequestParam("birthDate") LocalDate birthDate,
                                     @RequestParam("manDayValue") double manDayValue,
                                     @RequestParam("experience") String experience,
                                     @RequestPart("guideIdFront") byte[] guideIdFront,
@@ -25,24 +35,34 @@ public class GuideApi {
                                     @RequestPart("nicRear") byte[] nicRear,
                                     @RequestPart("profilePic") byte[] profilePic) {
 
-        System.out.println("Name : "+name);
-        System.out.println("Address : "+address);
-        System.out.println("Contact : "+contact);
-        System.out.println("Birth Date : "+birthDate);
-        System.out.println("Man Day Value : "+manDayValue);
-        System.out.println("Experience : "+experience);
-        System.out.println("Guide Id Front : "+guideIdFront);
-        System.out.println("Guide Id Rear : "+guideIdRear);
-        System.out.println("NIC Front : "+nicFront);
-        System.out.println("NIC Rear : "+nicRear);
-        System.out.println("Profile Pic : "+profilePic);
-
-        return new ResponseEntity<>(1, HttpStatus.CREATED);
+        GuideDTO guideDTO = new GuideDTO();
+        guideDTO.setName(name);
+        guideDTO.setAddress(address);
+        guideDTO.setContact(contact);
+        guideDTO.setBirthDate(birthDate);
+        guideDTO.setManDayValue(manDayValue);
+        guideDTO.setExperience(experience);
+        guideDTO.setGuideIdFront(guideIdFront);
+        guideDTO.setGuideIdRear(guideIdRear);
+        guideDTO.setNicFront(nicFront);
+        guideDTO.setNicRear(nicRear);
+        guideDTO.setProfilePic(profilePic);
+        try {
+            int i = service.saveGuide(guideDTO);
+            return new ResponseEntity<>(i, HttpStatus.CREATED);
+        } catch (SaveFailException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @DeleteMapping("/{id:\\d+}")
     public ResponseEntity deleteGuide(@PathVariable int id) {
-        return ResponseEntity.ok(1);
+        try {
+            service.deleteGuide(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @PutMapping("/{id:\\d+}")
@@ -73,28 +93,25 @@ public class GuideApi {
         guideDTO.setNicRear(nicRear);
         guideDTO.setProfilePic(profilePic);
 
-
-        return ResponseEntity.ok(guideDTO);
+        try {
+            service.updateGuide(guideDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (UpdateFailException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
 
     }
 
     @GetMapping("/{id:\\d+}")
     public ResponseEntity getGuide(@PathVariable int id) {
-        GuideDTO guideDTO = new GuideDTO();
-        guideDTO.setId(id);
-        guideDTO.setName("Test");
-        guideDTO.setAddress("Test");
-        guideDTO.setContact("Test");
-        guideDTO.setBirthDate(LocalDate.now());
-        guideDTO.setManDayValue(1);
-        guideDTO.setExperience("Test");
-        guideDTO.setGuideIdFront(new byte[]{1,2,3});
-        guideDTO.setGuideIdRear(new byte[]{1,2,3});
-        guideDTO.setNicFront(new byte[]{1,2,3});
-        guideDTO.setNicRear(new byte[]{1,2,3});
-        guideDTO.setProfilePic(new byte[]{1,2,3});
 
-        return ResponseEntity.ok(guideDTO);
+        try {
+            GuideDTO guide = service.getGuide(id);
+            return new ResponseEntity<>(guide, HttpStatus.OK);
+        } catch (SearchFailException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+
     }
 
 }
