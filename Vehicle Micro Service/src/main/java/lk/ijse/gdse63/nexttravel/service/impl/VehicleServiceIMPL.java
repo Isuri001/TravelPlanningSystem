@@ -1,7 +1,6 @@
 package lk.ijse.gdse63.nexttravel.service.impl;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import lk.ijse.gdse63.nexttravel.Exception.DeleteFailException;
 import lk.ijse.gdse63.nexttravel.Exception.NotFoundException;
 import lk.ijse.gdse63.nexttravel.Exception.SaveFailException;
@@ -14,6 +13,7 @@ import lk.ijse.gdse63.nexttravel.repo.DriverRepo;
 import lk.ijse.gdse63.nexttravel.repo.VehicleRepo;
 import lk.ijse.gdse63.nexttravel.service.VehicleService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -32,11 +32,11 @@ public class VehicleServiceIMPL implements VehicleService {
     Gson gson;
     VehicleRepo vehicleRepo;
     public VehicleServiceIMPL(DriverRepo driverRepo, VehicleRepo vehicleRepo,
-                              ModelMapper modelMapper, Gson gson) {
+                              ModelMapper modelMapper, Gson gsonr) {
         this.driverRepo = driverRepo;
         this.vehicleRepo = vehicleRepo;
         this.modelMapper = modelMapper;
-        this.gson = gson;
+        this.gson = gsonr;
 
     }
     @Override
@@ -51,6 +51,7 @@ public class VehicleServiceIMPL implements VehicleService {
         }catch (Exception e){
             throw new SaveFailException("Save Fail ",e);
         }
+        //exportImages(dto);
 
     }
 
@@ -92,10 +93,13 @@ public class VehicleServiceIMPL implements VehicleService {
 
     @Override
     public void updateVehicle(VehicleDTO dto) throws UpdatefailException {
+        System.out.println("Called :)");
         try {
             Vehicle vehicle = modelMapper.map(dto, Vehicle.class);
             Driver driver = modelMapper.map(dto.getDriverDTO(), Driver.class);
             Optional<Driver> byId = driverRepo.findById(driver.getId());
+            System.out.println(byId.isPresent());
+
             if (byId.isPresent()){
                 deleteImages(byId);
                 exportImages(dto,driver,vehicle);
@@ -155,7 +159,7 @@ public class VehicleServiceIMPL implements VehicleService {
 
     public void exportImages(VehicleDTO vehicleDTO, Driver driver, Vehicle vehicle) {
         ArrayList<byte[]> images = vehicleDTO.getImages();
-        String dt = LocalDate.now().toString().replace("-", "_") + "__"
+        String dt = LocalDate.now().toString().replace("-", "") + "_"
                 + LocalTime.now().toString().replace(":", "_");
 
         ArrayList<String> pathList = new ArrayList<>();
@@ -218,9 +222,9 @@ public class VehicleServiceIMPL implements VehicleService {
 
         String images = vehicle.getImages();
         vehicleDTO.setImages(new ArrayList<>());
-        ArrayList<String> imageList = gson.fromJson(images, new TypeToken<ArrayList<String>>() {});
+        ArrayList<String> imageList = gson.fromJson(images, new TypeToken<ArrayList<String>>(){});
         for (int i = 0; i < imageList.size(); i++) {
-            BufferedImage r = ImageIO.read(new File(driver.getLicenseImageRear()));
+            BufferedImage r = ImageIO.read(new File(imageList.get(i)));
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             ImageIO.write(r, "jpg", b);
             byte[] imgData= b.toByteArray();
